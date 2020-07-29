@@ -19,6 +19,11 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Set up libclang
+      run: |
+        apt update && apt install -y libclang-dev
+        rm -rf /var/lib/apt/lists/*
+
     - name: Set up cargo
       run: |
         curl https://sh.rustup.rs -sSf | sh -s -- -y
