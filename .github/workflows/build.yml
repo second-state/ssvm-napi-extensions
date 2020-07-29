@@ -19,9 +19,18 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Set up cargo
+      run: |
+        curl https://sh.rustup.rs -sSf | sh -s -- -y
+      env:
+        HOME: /root
+
     - name: Build SSVM-napi using gcc
       run: |
+        export PATH="$HOME/.cargo/bin:$PATH"
         JOBS=max npm install --fallback-to-build --update-binary . --unsafe-perm
+      env:
+        HOME: /root
 
   build_test_clang:
     runs-on: ubuntu-latest
@@ -33,6 +42,15 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Set up cargo
+      run: |
+        curl https://sh.rustup.rs -sSf | sh -s -- -y
+      env:
+        HOME: /root
+
     - name: Build SSVM-napi using clang
       run: |
+        export PATH="$HOME/.cargo/bin:$PATH"
         JOBS=max npm install --fallback-to-build --update-binary . --unsafe-perm
+      env:
+        HOME: /root
