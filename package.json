@@ -15,7 +15,7 @@
   "license": "Apache-2.0",
   "main": "index.js",
   "binary": {
-    "module_name": "ssvm",
+    "module_name": "ssvm-storage",
     "module_path": "./lib/binding/{platform}-{arch}/",
     "host": "https://github.com/second-state/ssvm-napi-storage/releases/download/",
     "remote_path": "{version}",
@@ -30,7 +30,7 @@
     "node-gyp-cache": "^0.2.1"
   },
   "scripts": {
-    "preinstall": "./preinstall.sh"
+    "preinstall": "./preinstall.sh",
     "install": "node-pre-gyp install --fallback-to-build"
   }
 }

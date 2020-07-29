@@ -5,6 +5,7 @@
 #include "vm/vm.h"
 #include "host/wasi/wasimodule.h"
 #include "common/statistics.h"
+#include "storage_module.h"
 #include <napi.h>
 #include <string>
 #include <vector>

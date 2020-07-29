@@ -7,7 +7,7 @@
       "cflags_cc!": [ "-fno-exceptions", "-fno-rtti" ],
       "link_settings": {
           "libraries": [
-              "./librust_native_storage_library.so",
+              "../rust_native_storage_library/target/debug/librust_native_storage_library.a",
           ],
       },
       "sources": [
@@ -54,6 +54,7 @@
         "<!@(node -p \"require('node-addon-api').include\")",
         "ssvm-core/include",
         "ssvm-storage/include",
+        "rust_native_storage_library/src",
         "ssvm-core/thirdparty",
         "ssvm-core/thirdparty/googletest/include",
         "/usr/lib/llvm-10/include",
