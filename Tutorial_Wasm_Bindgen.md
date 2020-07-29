@@ -103,14 +103,14 @@ After building, our target wasm file is located at `pkg/hello_bg.wasm`.
 ### Install SSVM addon for your application
 
 ```bash
-npm install ssvm
+npm install ssvm-storage
 ```
 
 or if you want to build from source:
 
 ```bash
 export CXX=g++-9
-npm install --build-from-source https://github.com/second-state/ssvm-napi
+npm install --build-from-source https://github.com/second-state/ssvm-napi-storage
 ```
 
 ### Use SSVM addon
