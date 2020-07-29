@@ -4,3 +4,6 @@
 [submodule "ssvm-storage"]
 	path = ssvm-storage
 	url = https://github.com/second-state/ssvm-storage.git
+[submodule "rust_native_storage_library"]
+	path = rust_native_storage_library
+	url = https://github.com/second-state/rust_native_storage_library.git

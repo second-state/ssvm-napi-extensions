@@ -4,6 +4,7 @@
 #include "support/filesystem.h"
 #include "support/log.h"
 #include "support/span.h"
+#include "storage_module.h"
 
 Napi::FunctionReference SSVMAddon::Constructor;
 
@@ -162,6 +163,7 @@ void SSVMAddon::InitVM(const Napi::CallbackInfo &Info) {
   Configure = new SSVM::VM::Configure();
   Configure->addVMType(SSVM::VM::Configure::VMType::Wasi);
   VM = new SSVM::VM::VM(*Configure);
+  VM->registerModule(StorageMod);
 
   SSVM::Log::setErrorLoggingLevel();
 

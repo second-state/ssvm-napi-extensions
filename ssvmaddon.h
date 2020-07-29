@@ -32,6 +32,7 @@ private:
   SSVM::VM::VM *VM;
   SSVM::Runtime::Instance::MemoryInstance *MemInst;
   SSVM::Statistics::Statistics Stat;
+  SSVM::Host::SSVMStorageModule StorageMod;
   SSVM::Host::WasiModule *WasiMod;
   bool Inited;
   InputMode IMode;

@@ -2,25 +2,17 @@
   "targets": [
     {
       "target_name": "<(module_name)",
-      "cflags_cc": [ "-std=c++17", "-lstdc++fs" ],
+      "cflags_cc": [ "-std=c++17" ],
       "cflags!": [ "-fno-exceptions", "-fno-rtti" ],
       "cflags_cc!": [ "-fno-exceptions", "-fno-rtti" ],
       "link_settings": {
           "libraries": [
-              # "/usr/lib/llvm-10/lib/libLLVM.so",
-              # "/usr/lib/llvm-10/lib/liblldELF.a",
-              # "/usr/lib/llvm-10/lib/liblldCommon.a",
-              # "/usr/lib/llvm-10/lib/liblldCore.a",
-              # "/usr/lib/llvm-10/lib/liblldDriver.a",
-              # "/usr/lib/llvm-10/lib/liblldReaderWriter.a",
-              # "/usr/lib/llvm-10/lib/liblldYAML.a",
-              "-lstdc++fs",
+              "./librust_native_storage_library.so",
           ],
       },
       "sources": [
         "addon.cc",
         "ssvmaddon.cc",
-        # "ssvm-core/lib/aot/compiler.cpp",
         "ssvm-core/lib/ast/description.cpp",
         "ssvm-core/lib/ast/expression.cpp",
         "ssvm-core/lib/ast/instruction.cpp",
@@ -55,10 +47,13 @@
         "ssvm-core/lib/validator/validator.cpp",
         "ssvm-core/lib/vm/vm.cpp",
         "ssvm-core/thirdparty/easyloggingpp/easylogging++.cc",
+        "ssvm-storage/lib/storage_func.cpp",
+        "ssvm-storage/lib/storage_module.cpp",
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
         "ssvm-core/include",
+        "ssvm-storage/include",
         "ssvm-core/thirdparty",
         "ssvm-core/thirdparty/googletest/include",
         "/usr/lib/llvm-10/include",
