@@ -46,6 +46,8 @@ Napi::Object SSVMAddon::Init(Napi::Env Env, Napi::Object Exports) {
   Napi::Function Func =
     DefineClass(Env, "VM", {
         InstanceMethod("GetStatistics", &SSVMAddon::GetStatistics),
+        InstanceMethod("Start", &SSVMAddon::Start),
+        InstanceMethod("Run", &SSVMAddon::Run),
         InstanceMethod("RunInt", &SSVMAddon::RunInt),
         InstanceMethod("RunString", &SSVMAddon::RunString),
         InstanceMethod("RunUint8Array", &SSVMAddon::RunUint8Array)});
@@ -80,7 +82,7 @@ inline bool isWasiOptionsProvided(const Napi::CallbackInfo &Info) {
 SSVMAddon::SSVMAddon(const Napi::CallbackInfo &Info)
   : Napi::ObjectWrap<SSVMAddon>(Info), Configure(nullptr),
   VM(nullptr), MemInst(nullptr),
-  WasiMod(nullptr), Inited(false) {
+  WasiMod(nullptr), Inited(false), EnableWasiStart(false) {
 
     Napi::Env Env = Info.Env();
     Napi::HandleScope Scope(Env);
@@ -121,6 +123,7 @@ SSVMAddon::SSVMAddon(const Napi::CallbackInfo &Info)
             "Parse environment variables from Wasi options failed.");
         return;
       }
+      EnableWasiStart = parseWasiStartFlag(WasiOptions);
     }
 
     // Handle input wasm
@@ -170,7 +173,9 @@ void SSVMAddon::InitVM(const Napi::CallbackInfo &Info) {
   WasiMod = dynamic_cast<SSVM::Host::WasiModule *>(
       VM->getImportModule(SSVM::VM::Configure::VMType::Wasi));
 
-  EnableWasmBindgen(Info);
+  if (!EnableWasiStart) {
+    EnableWasmBindgen(Info);
+  }
 }
 
 void SSVMAddon::PrepareResource(const Napi::CallbackInfo &Info,
@@ -241,6 +246,14 @@ void SSVMAddon::ReleaseResource(const Napi::CallbackInfo &Info, const uint32_t O
     napi_throw_error(Info.Env(), "Error", FreeError.c_str());
     return;
   }
+}
+
+bool SSVMAddon::parseWasiStartFlag(const Napi::Object &WasiOptions) {
+  if (WasiOptions.Has("EnableWasiStartFunction")
+      && WasiOptions.Get("EnableWasiStartFunction").IsBoolean()) {
+    return WasiOptions.Get("EnableWasiStartFunction").As<Napi::Boolean>().Value();
+  }
+  return false;
 }
 
 bool SSVMAddon::parseCmdArgs(
@@ -331,6 +344,48 @@ bool SSVMAddon::parseEnvs(
   return true;
 }
 
+Napi::Value SSVMAddon::Start(const Napi::CallbackInfo &Info) {
+  InitVM(Info);
+  std::string FuncName = "_start";
+  std::vector<std::string> MainCmdArgs = WasiCmdArgs;
+  MainCmdArgs.erase(MainCmdArgs.begin(), MainCmdArgs.begin()+2);
+  WasiMod->getEnv().init(WasiDirs, FuncName, MainCmdArgs, WasiEnvs);
+
+  SSVM::Expect<std::vector<SSVM::ValVariant>> Res;
+  if (IMode == InputMode::FilePath) {
+    Res = VM->runWasmFile(InputPath, FuncName);
+  } else {
+    Res = VM->runWasmFile(InputBytecode, FuncName);
+  }
+  if (!Res) {
+    Napi::Error::New(Info.Env(), "SSVM execution failed")
+      .ThrowAsJavaScriptException();
+    return Napi::Value();
+  }
+  WasiMod->getEnv().fini();
+  return Napi::Number::New(Info.Env(), 0);
+}
+
+void SSVMAddon::Run(const Napi::CallbackInfo &Info) {
+  InitVM(Info);
+  std::string FuncName = "";
+  if (Info.Length() > 0) {
+    FuncName = Info[0].As<Napi::String>().Utf8Value();
+  }
+
+  WasiMod->getEnv().init(WasiDirs, FuncName, WasiCmdArgs, WasiEnvs);
+
+  std::vector<SSVM::ValVariant> Args, Rets;
+  PrepareResource(Info, Args);
+  auto Res = VM->execute(FuncName, Args);
+
+  if (!Res) {
+    napi_throw_error(Info.Env(), "Error", "SSVM execution failed");
+  }
+
+  WasiMod->getEnv().fini();
+}
+
 Napi::Value SSVMAddon::RunInt(const Napi::CallbackInfo &Info) {
   InitVM(Info);
   std::string FuncName = "";
@@ -346,6 +401,7 @@ Napi::Value SSVMAddon::RunInt(const Napi::CallbackInfo &Info) {
 
   if (Res) {
     Rets = *Res;
+    WasiMod->getEnv().fini();
     return Napi::Number::New(Info.Env(), std::get<uint32_t>(Rets[0]));
   } else {
     napi_throw_error(Info.Env(), "Error", "SSVM execution failed");
@@ -393,6 +449,7 @@ Napi::Value SSVMAddon::RunString(const Napi::CallbackInfo &Info) {
   }
 
   std::string ResultString(ResultData.begin(), ResultData.end());
+  WasiMod->getEnv().fini();
   return Napi::String::New(Info.Env(), ResultString);
 }
 
@@ -441,6 +498,7 @@ Napi::Value SSVMAddon::RunUint8Array(const Napi::CallbackInfo &Info) {
     Napi::ArrayBuffer::New(Info.Env(), &(ResultData[0]), ResultDataLen);
   Napi::Uint8Array ResultTypedArray = Napi::Uint8Array::New(
       Info.Env(), ResultDataLen, ResultArrayBuffer, 0, napi_uint8_array);
+  WasiMod->getEnv().fini();
   return ResultTypedArray;
 }
 

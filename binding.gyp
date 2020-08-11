@@ -57,7 +57,7 @@
         "rust_native_storage_library/src",
         "ssvm-core/thirdparty",
         "ssvm-core/thirdparty/googletest/include",
-        "/usr/lib/llvm-10/include",
+        # "/usr/lib/llvm-10/include",
       ],
       'defines': [ 'NAPI_DISABLE_CPP_EXCEPTIONS' ],
     },
