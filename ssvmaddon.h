@@ -1,6 +1,11 @@
 #ifndef SSVMADDON_H
 #define SSVMADDON_H
 
+#include "bytecode.h"
+#include "cache.h"
+#include "errors.h"
+#include "options.h"
+
 #include "vm/configure.h"
 #include "vm/vm.h"
 #include "host/wasi/wasimodule.h"
@@ -20,13 +25,6 @@ public:
     delete VM;
   };
 
-  enum class InputMode {
-    FilePath,
-    WasmBytecode,
-    ELFBytecode,
-    MachOBytecode
-  };
-
   enum class IntKind {
     Default,
     SInt32,
@@ -36,6 +34,7 @@ public:
   };
 
 private:
+  using ErrorType = SSVM::NAPI::ErrorType;
   static Napi::FunctionReference Constructor;
   SSVM::VM::Configure *Configure;
   SSVM::VM::VM *VM;
@@ -43,25 +42,16 @@ private:
   SSVM::Statistics::Statistics Stat;
   SSVM::Host::SSVMStorageModule StorageMod;
   SSVM::Host::WasiModule *WasiMod;
-  bool Inited;
-  bool EnableWasiStart;
-  bool EnableAOT;
-  InputMode IMode;
-  std::string InputPath;
-  std::vector<uint8_t> InputBytecode;
+  SSVM::NAPI::Bytecode BC;
+  SSVM::NAPI::SSVMOptions Options;
+  SSVM::NAPI::SSVMCache Cache;
   std::vector<uint8_t> ResultData;
-  std::vector<std::string> WasiCmdArgs, WasiDirs, WasiEnvs;
+  bool Inited;
 
   /// Setup related functions
   void InitVM(const Napi::CallbackInfo &Info);
-  /// Prepare wasi module from given wasi options
-  bool parseWasiStartFlag(const Napi::Object &Options);
-  bool parseAOTConfig(const Napi::Object &Options);
-  bool parseCmdArgs(std::vector<std::string> &CmdArgs, const Napi::Object &Options);
-  bool parseDirs(std::vector<std::string> &Dirs, const Napi::Object &Options);
-  bool parseEnvs(std::vector<std::string> &Envs, const Napi::Object &Options);
+  void LoadWasm(const Napi::CallbackInfo &Info);
   /// WasmBindgen related functions
-  void EnableWasmBindgen(const Napi::CallbackInfo &Info);
   void PrepareResource(const Napi::CallbackInfo &Info,
       std::vector<SSVM::ValVariant> &Args, IntKind IntT);
   void PrepareResource(const Napi::CallbackInfo &Info,
@@ -81,7 +71,7 @@ private:
   Napi::Value GetStatistics(const Napi::CallbackInfo &Info);
   /// AoT functions
   bool Compile();
-  void CallAOTInit(const Napi::CallbackInfo &Info);
+  void InitReactor(const Napi::CallbackInfo &Info);
 };
 
 #endif

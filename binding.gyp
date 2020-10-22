@@ -19,8 +19,10 @@
       },
       "sources": [
         "addon.cc",
-        "utils.cc",
+        "bytecode.cc",
+        "options.cc",
         "ssvmaddon.cc",
+        "utils.cc",
         "ssvm-core/lib/aot/compiler.cpp",
         "ssvm-core/lib/ast/description.cpp",
         "ssvm-core/lib/ast/expression.cpp",
