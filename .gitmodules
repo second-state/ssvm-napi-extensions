@@ -7,3 +7,6 @@
 [submodule "rust_native_storage_library"]
 	path = rust_native_storage_library
 	url = https://github.com/second-state/rust_native_storage_library.git
+[submodule "ssvm-tensorflow"]
+	path = ssvm-tensorflow
+	url = https://github.com/second-state/ssvm-tensorflow.git

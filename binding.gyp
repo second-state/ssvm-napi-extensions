@@ -8,6 +8,7 @@
       "link_settings": {
           "libraries": [
               "../rust_native_storage_library/target/debug/librust_native_storage_library.a",
+              "/usr/local/lib/libtensorflow.so",
               "/usr/lib/llvm-10/lib/libLLVM.so",
               "/usr/lib/llvm-10/lib/liblldELF.a",
               "/usr/lib/llvm-10/lib/liblldCommon.a",
@@ -62,6 +63,8 @@
         "ssvm-napi/ssvm-core/thirdparty/easyloggingpp/easylogging++.cc",
         "ssvm-storage/lib/storage_func.cpp",
         "ssvm-storage/lib/storage_module.cpp",
+        "ssvm-tensorflow/lib/tensorflow_func.cpp",
+        "ssvm-tensorflow/lib/tensorflow_module.cpp",
       ],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
@@ -70,6 +73,7 @@
         "ssvm-napi/ssvm-core/thirdparty",
         "ssvm-napi/ssvm-core/thirdparty/googletest/include",
         "ssvm-storage/include",
+        "ssvm-tensorflow/include",
         "rust_native_storage_library/src",
         "/usr/lib/llvm-10/include",
       ],
