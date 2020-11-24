@@ -136,6 +136,7 @@ void SSVMAddon::InitVM(const Napi::CallbackInfo &Info) {
   Configure->addVMType(SSVM::VM::Configure::VMType::SSVM_Process);
   VM = new SSVM::VM::VM(*Configure);
   VM->registerModule(StorageMod);
+  VM->registerModule(TensorflowMod);
 
   SSVM::Log::setErrorLoggingLevel();
 
