@@ -1,7 +1,7 @@
 {
-  "name": "ssvm-storage",
-  "version": "0.7.1",
-  "description": "Second State WebAssembly VM for Node.js Addon with native storage interface support",
+  "name": "ssvm-extensions",
+  "version": "0.0.1",
+  "description": "Second State WebAssembly VM for Node.js Addon with all extensions",
   "keywords": [
     "wasm",
     "rust",
@@ -9,15 +9,16 @@
     "wasi",
     "runtime",
     "serverless",
+    "tensorflow",
     "fucntion-as-a-service"
   ],
-  "repository": "https://github.com/second-state/ssvm-napi-storage.git",
+  "repository": "https://github.com/second-state/ssvm-napi-extensions.git",
   "license": "Apache-2.0",
   "main": "index.js",
   "binary": {
-    "module_name": "ssvm-storage",
+    "module_name": "ssvm-extensions",
     "module_path": "./lib/binding/{platform}-{arch}/",
-    "host": "https://github.com/second-state/ssvm-napi-storage/releases/download/",
+    "host": "https://github.com/second-state/ssvm-napi-extensions/releases/download/",
     "remote_path": "{version}",
     "package_name": "{module_name}-{platform}-{arch}.tar.gz"
   },
