@@ -1,6 +1,6 @@
-[submodule "ssvm-core"]
-	path = ssvm-core
-	url = https://github.com/second-state/SSVM.git
+[submodule "ssvm-napi"]
+	path = ssvm-napi
+	url = https://github.com/second-state/ssvm-napi.git
 [submodule "ssvm-storage"]
 	path = ssvm-storage
 	url = https://github.com/second-state/ssvm-storage.git
