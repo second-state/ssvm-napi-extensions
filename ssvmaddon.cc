@@ -1,10 +1,10 @@
 #include "ssvmaddon.h"
 
 #include "aot/compiler.h"
+#include "common/filesystem.h"
+#include "common/log.h"
+#include "common/span.h"
 #include "loader/loader.h"
-#include "support/filesystem.h"
-#include "support/log.h"
-#include "support/span.h"
 #include "storage_module.h"
 #include "utils.h"
 
@@ -147,6 +147,7 @@ void SSVMAddon::FiniVM() {
     return;
   }
 
+  Stat = VM->getStatistics();
   delete VM;
   VM = nullptr;
   delete Configure;
@@ -627,19 +628,22 @@ Napi::Value SSVMAddon::GetStatistics(const Napi::CallbackInfo &Info) {
   if (!Options.isMeasuring()) {
     RetStat.Set("Measure", Napi::Boolean::New(Info.Env(), false));
   } else {
-    Stat = VM->getStatistics();
+    auto Nano = [](auto &&Duration) {
+      return std::chrono::nanoseconds(Duration).count();
+    };
 
     RetStat.Set("Measure", Napi::Boolean::New(Info.Env(), true));
     RetStat.Set("TotalExecutionTime",
-                Napi::Number::New(Info.Env(), Stat.getTotalExecTime()));
+                Napi::Number::New(Info.Env(), Nano(Stat.getTotalExecTime())));
     RetStat.Set("WasmExecutionTime",
-                Napi::Number::New(Info.Env(), Stat.getWasmExecTime()));
-    RetStat.Set("HostFunctionExecutionTime",
-                Napi::Number::New(Info.Env(), Stat.getHostFuncExecTime()));
+                Napi::Number::New(Info.Env(), Nano(Stat.getWasmExecTime())));
+    RetStat.Set(
+        "HostFunctionExecutionTime",
+        Napi::Number::New(Info.Env(), Nano(Stat.getHostFuncExecTime())));
     RetStat.Set("InstructionCount",
                 Napi::Number::New(Info.Env(), Stat.getInstrCount()));
     RetStat.Set("TotalGasCost",
-                Napi::Number::New(Info.Env(), Stat.getTotalGasCost()));
+                Napi::Number::New(Info.Env(), Stat.getTotalCost()));
     RetStat.Set("InstructionPerSecond",
                 Napi::Number::New(Info.Env(), Stat.getInstrPerSecond()));
   }
