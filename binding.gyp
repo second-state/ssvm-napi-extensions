@@ -9,6 +9,7 @@
           "libraries": [
               "../rust_native_storage_library/target/debug/librust_native_storage_library.a",
               "/usr/local/lib/libtensorflow.so",
+              "/usr/local/lib/libtensorflow_framework.so",
               "/usr/lib/llvm-10/lib/libLLVM.so",
               "/usr/lib/llvm-10/lib/liblldELF.a",
               "/usr/lib/llvm-10/lib/liblldCommon.a",
