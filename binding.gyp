@@ -7,6 +7,8 @@
       "cflags_cc!": [ "-fno-exceptions", "-fno-rtti" ],
       "link_settings": {
           "libraries": [
+              "-ljpeg",
+              "-lpng",
               "../rust_native_storage_library/target/debug/librust_native_storage_library.a",
               "/usr/local/lib/libtensorflow.so",
               "/usr/local/lib/libtensorflow_framework.so",
