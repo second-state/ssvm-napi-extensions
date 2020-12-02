@@ -81,3 +81,23 @@ jobs:
         cd node && node app.js && cd ..
         ssvmup clean
       working-directory: wasm-learning/nodejs/kmeans
+
+    - name: Test MobileNet ${{ matrix.ssvm-options }}
+      if: ${{ contains(matrix.ssvm-options, 'aot') }}
+      run: |
+        ssvmup build ${{ matrix.ssvm-options }}
+        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
+        cd test && node test.js && cd ..
+        ssvmup clean
+      working-directory: wasm-learning/faas/mobilenet
+
+    - name: Test MTCNN ${{ matrix.ssvm-options }}
+      if: ${{ contains(matrix.ssvm-options, 'aot') }}
+      run: |
+        ssvmup build ${{ matrix.ssvm-options }}
+        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
+        cd test && node test.js && cd ..
+        ssvmup clean
+      working-directory: wasm-learning/faas/mtcnn
