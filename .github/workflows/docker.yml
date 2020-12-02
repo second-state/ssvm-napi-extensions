@@ -3,7 +3,8 @@ on:
   push:
     branches:
       - master
-      - yi/tensorflow
+      - yi/**
+      - hydai/**
 jobs:
   push_to_dockerhub:
     name: Push docker image to DockerHub
@@ -28,7 +29,7 @@ jobs:
           file: utils/docker/Dockerfile
           platforms: linux/amd64
           push: true
-          tags: secondstate/ssvm-extensions:wip
+          tags: secondstate/ssvm-extensions:latest
           labels: |
             org.opencontainers.image.title=${{ github.event.repository.name }}
             org.opencontainers.image.description=${{ github.event.repository.description }}
