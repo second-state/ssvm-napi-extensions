@@ -12,7 +12,7 @@ jobs:
   build_and_test:
     runs-on: ubuntu-latest
     container:
-      image: secondstate/ssvm-extensions:wip
+      image: secondstate/ssvm-extensions:latest
 
     strategy:
       matrix:

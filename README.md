@@ -21,32 +21,19 @@ Users should install the dependencies by the following requirments:
 * libstdc++6 >= 6.0.28 (GLIBCXX >= 3.4.28)
 * g++ version >= 9.0 (Optional, if you have to build from source)
 
+For the tensorflow extensions:
+
+* libpng-dev
+* libjpeg-dev
+
 ## Prepare environment
 
-### Use our docker image (recommended)
+### Use our docker image or dockerfile
 
 ```bash
-$ docker build . -f utils/docker/Dockerfile -t secondstate/ssvm-napi-extensions
-```
-
-### For ubuntu 20.04
-
-```bash
-# Tools and libraries
-$ sudo apt install -y \
-	software-properties-common \
-	cmake \
-	libboost-all-dev
-
-# And you will need to install llvm for ssvm-aot tools
-$ sudo apt install -y \
-	llvm-dev \
-	liblld-10-dev
-
-# SSVM supports both clang++ and g++ compilers
-# You can choose one of them for building this project
-$ sudo apt install -y gcc g++
-$ sudo apt install -y clang
+$ docker pull secondstate/ssvm-extensions
+# Or you can build it on your local environment.
+$ docker build . -f utils/docker/Dockerfile -t secondstate/ssvm-extensions
 ```
 
 ### Verify the version of llvm
