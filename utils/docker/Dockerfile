@@ -1,7 +1,7 @@
 FROM secondstate/ssvm:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG TENSORFLOW_TARBALL=libtensorflow-cpu-linux-x86_64-1.5.0.tar.gz
+ARG TENSORFLOW_TARBALL=libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH
@@ -27,7 +27,8 @@ RUN npm install -y -g --unsafe-perm \
 RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
     && cargo install \
         cargo-wasi \
-        mtcnn
+        mtcnn \
+        mobilenet_v2
 
 RUN rm -rf /var/lib/apt/lists/* ${TENSORFLOW_TARBALL}
 WORKDIR /root
