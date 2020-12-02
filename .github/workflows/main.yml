@@ -1,0 +1,40 @@
+name: Main Workflow
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+    branches:
+    - master
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    container:
+      image: secondstate/ssvm-extensions:wip
+
+    strategy:
+      matrix:
+        cc: ['clang', 'gcc']
+        include:
+        - cc: 'clang'
+          cxx: 'clang++'
+        - cc: 'gcc'
+          cxx: 'g++'
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build SSVM-napi with ${{ matrix.cc }}
+      uses: './ssvm-napi/.github/actions/build-from-source'
+      with:
+        cc: ${{ matrix.cc }}
+        cxx: ${{ matrix.cxx }}
+
+    # XXX: This does NOT test ssvm-napi-extensions. Fix it!
+    - name: Test SSVM-napi built with ${{ matrix.cc }}
+      run: |
+        JOBS=max npm test

@@ -34,7 +34,7 @@
   },
   "scripts": {
     "preinstall": "./preinstall.sh",
-    "test": "cd test && ./test.sh",
+    "test": "cd ssvm-napi/test && ./test.sh",
     "install": "node-pre-gyp install --fallback-to-build"
   }
 }

@@ -1,0 +1,83 @@
+name: External Test
+
+on:
+  push:
+    branches:
+    - master
+    tags:
+    - '[0-9]+.[0-9]+.[0-9]+'
+  pull_request:
+    branches:
+    - master
+
+
+jobs:
+  test_wasm_learning:
+    runs-on: ubuntu-20.04
+    container:
+      image: secondstate/ssvm-extensions:wip
+
+    strategy:
+      matrix:
+        ssvm-options: ['', '--enable-aot']
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+
+    - name: Build and install SSVM-napi
+      uses: './ssvm-napi/.github/actions/build-from-source'
+
+    - name: Checkout wasm-learning
+      uses: actions/checkout@v2
+      with:
+        repository: second-state/wasm-learning
+        path: wasm-learning
+
+    - name: Test functions ${{ matrix.ssvm-options }}
+      run: |
+        ssvmup build ${{ matrix.ssvm-options }}
+        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
+        node node/app.js
+        ssvmup clean
+      working-directory: wasm-learning/nodejs/functions
+
+    - name: Test JSON IO ${{ matrix.ssvm-options }}
+      run: |
+        ssvmup build ${{ matrix.ssvm-options }}
+        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
+        node node/app.js
+        ssvmup clean
+      working-directory: wasm-learning/nodejs/json_io
+
+    - name: Test WASI ${{ matrix.ssvm-options }}
+      run: |
+        ssvmup build ${{ matrix.ssvm-options }}
+        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
+        node node/app.js
+        ssvmup clean
+      working-directory: wasm-learning/nodejs/wasi
+
+    - name: Test RSA ${{ matrix.ssvm-options }}
+      if: ${{ contains(matrix.ssvm-options, 'aot') }}
+      run: |
+        ssvmup build ${{ matrix.ssvm-options }}
+        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
+        node node/app.js
+        ssvmup clean
+      working-directory: wasm-learning/nodejs/rsa_example
+
+    - name: Test KMeans ${{ matrix.ssvm-options }}
+      if: ${{ contains(matrix.ssvm-options, 'aot') }}
+      run: |
+        ssvmup build ${{ matrix.ssvm-options }}
+        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
+        cd node && node app.js && cd ..
+        ssvmup clean
+      working-directory: wasm-learning/nodejs/kmeans
