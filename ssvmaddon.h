@@ -10,8 +10,10 @@
 #include "vm/vm.h"
 #include "host/wasi/wasimodule.h"
 #include "common/statistics.h"
+#include "image_module.h"
 #include "storage_module.h"
 #include "tensorflow_module.h"
+#include "tensorflowlite_module.h"
 #include <napi.h>
 #include <string>
 #include <vector>
@@ -45,8 +47,10 @@ private:
   SSVM::VM::VM *VM;
   SSVM::Runtime::Instance::MemoryInstance *MemInst;
   SSVM::Statistics::Statistics Stat;
+  SSVM::Host::SSVMImageModule ImageMod;
   SSVM::Host::SSVMStorageModule StorageMod;
   SSVM::Host::SSVMTensorflowModule TensorflowMod;
+  SSVM::Host::SSVMTensorflowLiteModule TensorflowLiteMod;
   SSVM::Host::WasiModule *WasiMod;
   SSVM::NAPI::Bytecode BC;
   SSVM::NAPI::SSVMOptions Options;
