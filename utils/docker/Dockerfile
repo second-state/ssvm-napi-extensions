@@ -1,7 +1,7 @@
 FROM secondstate/ssvm:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
-ARG TENSORFLOW_TARBALL=libtensorflow-cpu-linux-x86_64-1.15.0.tar.gz
+ARG TENSORFLOW_TARBALL=libtensorflow-cpu-linux-x86_64-2.3.0.tar.gz
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
     PATH=/usr/local/cargo/bin:$PATH
