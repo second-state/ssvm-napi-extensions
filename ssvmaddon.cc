@@ -5,7 +5,6 @@
 #include "common/log.h"
 #include "common/span.h"
 #include "loader/loader.h"
-#include "storage_module.h"
 #include "utils.h"
 
 #include <limits>
@@ -136,7 +135,9 @@ void SSVMAddon::InitVM(const Napi::CallbackInfo &Info) {
   Configure->addVMType(SSVM::VM::Configure::VMType::SSVM_Process);
   VM = new SSVM::VM::VM(*Configure);
   VM->registerModule(StorageMod);
+  VM->registerModule(ImageMod);
   VM->registerModule(TensorflowMod);
+  VM->registerModule(TensorflowLiteMod);
 
   SSVM::Log::setErrorLoggingLevel();
 
