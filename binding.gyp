@@ -1,7 +1,21 @@
 {
   "targets": [
     {
+      "target_name": "action_before_build",
+      "type": "none",
+      "hard_dependency": 1,
+      "actions": [
+        {
+          "action_name": "build rust-native-storage library",
+          "inputs": [ "scripts/build_storage_lib.sh" ],
+          "outputs": [ "" ],
+          "action": ["scripts/build_storage_lib.sh"]
+        }
+      ]
+    },
+    {
       "target_name": "<(module_name)",
+      "dependencies": [ "action_before_build" ],
       "cflags_cc": [ "-std=c++17" ],
       "cflags!": [ "-fno-exceptions", "-fno-rtti" ],
       "cflags_cc!": [ "-fno-exceptions", "-fno-rtti" ],

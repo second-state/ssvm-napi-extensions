@@ -1,6 +1,6 @@
 {
   "name": "ssvm-extensions",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Second State WebAssembly VM for Node.js Addon with all extensions",
   "keywords": [
     "wasm",
@@ -33,7 +33,7 @@
     "ssvmup": "^0.1.17"
   },
   "scripts": {
-    "preinstall": "./preinstall.sh",
+    "preinstall": "./scripts/preinstall.sh",
     "test": "cd ssvm-napi/test && ./test.sh",
     "install": "node-pre-gyp install --fallback-to-build"
   }
