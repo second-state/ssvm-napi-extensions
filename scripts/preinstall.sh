@@ -1,9 +1,4 @@
 #!/usr/bin/env bash
-# Build SSVM-Storage dependencies
-cd ./rust_native_storage_library/
-make target/debug/librust_native_storage_library.so
-cd ../
-
 # Check TensorFlow version
 c++ ./utils/checker/tensorflow_version_checker.cc -ltensorflow -o ./tf_ver
 ./tf_ver
