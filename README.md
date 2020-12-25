@@ -25,6 +25,17 @@ For the tensorflow extensions:
 
 * libpng-dev
 * libjpeg-dev
+* libtensorflowlite\_c.so
+	* You can use the following commands to get libtensorflowlite\_c.so
+	```bash
+	# Download TensorFlow deps
+	wget https://github.com/second-state/ssvm-tensorflow-deps/releases/download/0.1.0/ssvm-tensorflow-deps-0.1.0-linux-x64.tar.gz
+	tar -zxvf ssvm-tensorflow-deps-0.1.0-linux-x64.tar.gz
+	rm -f ssvm-tensorflow-deps-0.1.0-linux-x64.tar.gz
+	cp ./libtensorflowlite_c.so /usr/local/lib
+	rm ./*.so
+	rm ./*.so.*
+	```
 
 ## Prepare environment
 
