@@ -25,16 +25,20 @@ For the tensorflow extensions:
 
 * libpng-dev
 * libjpeg-dev
+* libtensorflow.so
+	* Please refer to the TensorFlow website for more details
+	```base
+	RUN wget https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz \
+		&& tar -C /usr/local -xzf libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz \
+		&& ldconfig
+	```
 * libtensorflowlite\_c.so
 	* You can use the following commands to get libtensorflowlite\_c.so
 	```bash
 	# Download TensorFlow deps
-	wget https://github.com/second-state/ssvm-tensorflow-deps/releases/download/0.1.0/ssvm-tensorflow-deps-0.1.0-linux-x64.tar.gz
-	tar -zxvf ssvm-tensorflow-deps-0.1.0-linux-x64.tar.gz
-	rm -f ssvm-tensorflow-deps-0.1.0-linux-x64.tar.gz
+	wget https://github.com/second-state/ssvm-tensorflow-deps/releases/download/0.1.0/ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
+	tar -zxvf ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	cp ./libtensorflowlite_c.so /usr/local/lib
-	rm ./*.so
-	rm ./*.so.*
 	```
 
 ## Prepare environment
