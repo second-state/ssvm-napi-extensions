@@ -37,8 +37,7 @@ jobs:
 
     - name: Test functions ${{ matrix.ssvm-options }}
       run: |
-        ssvmup build ${{ matrix.ssvm-options }}
-        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        ssvmup build ${{ matrix.ssvm-options }} --enable-ext
         cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
         node node/app.js
         ssvmup clean
@@ -46,8 +45,7 @@ jobs:
 
     - name: Test JSON IO ${{ matrix.ssvm-options }}
       run: |
-        ssvmup build ${{ matrix.ssvm-options }}
-        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        ssvmup build ${{ matrix.ssvm-options }} --enable-ext
         cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
         node node/app.js
         ssvmup clean
@@ -55,8 +53,7 @@ jobs:
 
     - name: Test WASI ${{ matrix.ssvm-options }}
       run: |
-        ssvmup build ${{ matrix.ssvm-options }}
-        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        ssvmup build ${{ matrix.ssvm-options }} --enable-ext
         cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
         node node/app.js
         ssvmup clean
@@ -65,8 +62,7 @@ jobs:
     - name: Test RSA ${{ matrix.ssvm-options }}
       if: ${{ contains(matrix.ssvm-options, 'aot') }}
       run: |
-        ssvmup build ${{ matrix.ssvm-options }}
-        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        ssvmup build ${{ matrix.ssvm-options }} --enable-ext
         cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
         node node/app.js
         ssvmup clean
@@ -75,8 +71,7 @@ jobs:
     - name: Test KMeans ${{ matrix.ssvm-options }}
       if: ${{ contains(matrix.ssvm-options, 'aot') }}
       run: |
-        ssvmup build ${{ matrix.ssvm-options }}
-        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        ssvmup build ${{ matrix.ssvm-options }} --enable-ext
         cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
         cd node && node app.js && cd ..
         ssvmup clean
@@ -85,8 +80,7 @@ jobs:
     - name: Test MobileNet ${{ matrix.ssvm-options }}
       if: ${{ contains(matrix.ssvm-options, 'aot') }}
       run: |
-        ssvmup build ${{ matrix.ssvm-options }}
-        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        ssvmup build ${{ matrix.ssvm-options }} --enable-ext
         cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
         cd test && node test.js && cd ..
         ssvmup clean
@@ -95,8 +89,7 @@ jobs:
     - name: Test MTCNN ${{ matrix.ssvm-options }}
       if: ${{ contains(matrix.ssvm-options, 'aot') }}
       run: |
-        ssvmup build ${{ matrix.ssvm-options }}
-        sed -i "s/require('ssvm')/require('ssvm-extensions')/g" pkg/*.js
+        ssvmup build ${{ matrix.ssvm-options }} --enable-ext
         cd pkg && npm i ${GITHUB_WORKSPACE} && cd ..
         cd test && node test.js && cd ..
         ssvmup clean
