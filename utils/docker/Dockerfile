@@ -2,7 +2,7 @@ FROM secondstate/ssvm:latest
 
 ARG DEBIAN_FRONTEND=noninteractive
 ARG TENSORFLOW_TARBALL=libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
-ARG TENSORFLOW_LITE_TARBALL=ssvm-tensorflow-deps-0.1.0-linux-x64.tar.gz
+ARG TENSORFLOW_LITE_TARBALL=ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 ARG SSVM_TENSORFLOW_DEPS_VERSION=0.1.0
 ENV RUSTUP_HOME=/usr/local/rustup \
     CARGO_HOME=/usr/local/cargo \
