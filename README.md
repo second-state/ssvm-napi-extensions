@@ -49,10 +49,10 @@ sudo aptitude install libjpeg-dev
 	rm -rf ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	```
 * Configure dynamic linker run-time bindings
-```
-cd /usr/local/lib
-sudo ldconfig
-```
+        ```bash
+        cd /usr/local/lib
+        sudo ldconfig
+        ```
 
 ## Prepare environment
 
