@@ -35,15 +35,15 @@ sudo aptitude install libjpeg-dev
 	* Please refer to [the TensorFlow website](https://www.tensorflow.org/install/lang_c) for more details
 	```bash
 	cd ~
-        wget https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
-        sudo tar -C /usr/local -xzf libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
+	wget https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
+	sudo tar -C /usr/local -xzf libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
 	rm -rf libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
-        sudo ldconfig
+	sudo ldconfig
 	```
 * libtensorflowlite\_c.so
 	* You can use the following commands to get libtensorflowlite\_c.so
 	```bash
-	# Download TensorFlow deps
+        # Download TensorFlow deps
 	cd ~
 	wget https://github.com/second-state/ssvm-tensorflow-deps/releases/download/0.1.0/ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	sudo tar -C /usr/local/lib -xzf ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
