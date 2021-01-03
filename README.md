@@ -38,7 +38,6 @@ sudo aptitude install libjpeg-dev
 	wget https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
 	sudo tar -C /usr/local -xzf libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
 	rm -rf libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz
-	sudo ldconfig
 	```
 * libtensorflowlite\_c.so
 	* You can use the following commands to get libtensorflowlite\_c.so
@@ -47,8 +46,13 @@ sudo aptitude install libjpeg-dev
 	cd ~
 	wget https://github.com/second-state/ssvm-tensorflow-deps/releases/download/0.1.0/ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	sudo tar -C /usr/local/lib -xzf ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
-	sudo ldconfig
+	rm -rf ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	```
+* Configure dynamic linker run-time bindings
+```
+cd /usr/local/lib
+sudo ldconfig
+```
 
 ## Prepare environment
 
