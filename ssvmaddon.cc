@@ -5,6 +5,8 @@
 #include "common/log.h"
 #include "common/span.h"
 #include "loader/loader.h"
+#include "host/ssvm_process/processmodule.h"
+#include "host/wasi/wasimodule.h"
 #include "utils.h"
 
 #include <limits>
@@ -64,8 +66,8 @@ inline uint64_t castFromU32ToU64(uint32_t L, uint32_t H) {
 
 inline bool endsWith(const std::string &S, const std::string &Suffix) {
   return S.length() >= Suffix.length() &&
-         S.compare(S.length() - Suffix.length(), std::string::npos,
-                   Suffix) == 0;
+         S.compare(S.length() - Suffix.length(), std::string::npos, Suffix) ==
+             0;
 }
 
 } // namespace
@@ -146,6 +148,17 @@ void SSVMAddon::InitVM(const Napi::CallbackInfo &Info) {
 
   SSVM::Log::setErrorLoggingLevel();
 
+  SSVM::Host::SSVMProcessModule *ProcMod =
+    dynamic_cast<SSVM::Host::SSVMProcessModule *>(
+        VM->getImportModule(SSVM::VM::Configure::VMType::SSVM_Process));
+
+  if (Options.isAllowedCmdsAll()) {
+    ProcMod->getEnv().AllowedAll = true;
+  }
+  for (auto &Cmd : Options.getAllowedCmds()) {
+    ProcMod->getEnv().AllowedCmd.insert(Cmd);
+  }
+
   Inited = true;
 }
 
@@ -173,8 +186,7 @@ void SSVMAddon::InitWasi(const Napi::CallbackInfo &Info,
   if (Options.isAOTMode()) {
     if (BC.isFile() && endsWith(BC.getPath(), ".so")) {
       // BC is already the compiled filename, do nothing
-    }
-    else if (!BC.isCompiled()) {
+    } else if (!BC.isCompiled()) {
       Compile();
     }
     /// After Compile(), {Bytecode, FilePath} -> {FilePath}
@@ -432,8 +444,7 @@ void SSVMAddon::Run(const Napi::CallbackInfo &Info) {
   FiniVM();
 }
 
-Napi::Value SSVMAddon::RunCompile(const Napi::CallbackInfo &Info)
-{
+Napi::Value SSVMAddon::RunCompile(const Napi::CallbackInfo &Info) {
   std::string FileName;
   if (Info.Length() > 0) {
     FileName = Info[0].As<Napi::String>().Utf8Value();

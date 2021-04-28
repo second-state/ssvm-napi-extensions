@@ -28,6 +28,9 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Set Rust to required version
+      run: rustup override set 1.50.0
+
     - name: Build SSVM-napi with ${{ matrix.cc }}
       uses: './ssvm-napi/.github/actions/build-from-source'
       with:
