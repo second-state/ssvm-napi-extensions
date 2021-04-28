@@ -28,7 +28,7 @@ For the tensorflow extensions:
 * libtensorflow.so
 	* Please refer to the TensorFlow website for more details
 	```base
-	RUN wget https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz \
+	wget https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz \
 		&& tar -C /usr/local -xzf libtensorflow-cpu-linux-x86_64-2.4.0.tar.gz \
 		&& ldconfig
 	```
@@ -92,17 +92,19 @@ Please refer to [Tutorial: A standalone wasm32-wasi application](./Tutorial_Wasm
 ### Constructor: `ssvm.VM(wasm, ssvm_options) -> vm_instance`
 * Create a ssvm instance by given wasm file and options.
 * Arguments:
-	* `wasm`: Input wasm file, can be the following three formats:
+	* `wasm`: Input wasm file, can be the following two formats:
 		1. Wasm file path (String, e.g. `/tmp/hello.wasm`)
 		2. Wasm bytecode format which is the content of a wasm binary file (Uint8Array)
 	* `options`: An options object for setup the SSVM execution environment.
 		* `options` <JS Object>
-			* `args` <JS Array>: An array of strings that Wasm application will get as function arguments. Default: `[]`
-			* `env` <JS Object>: An object like `process.env` that Wasm application will get as its environment variables. Default: `{}`
-			* `preopens` <JS Object>: An object which maps '<guest_path>:<host_path>'. E.g. `{'/sandbox': '/some/real/path/that/wasm/can/access'}` Default: `{}`
-			* `EnableWasiStartFunction`: This option will disable wasm-bindgen mode and prepare the working environment for standalone wasm program. If you want to run an appliation with `main()`, you should set this to `true`. Default: `false`.
-			* `EnableAOT`: This option will enable ssvm aot mode. Default: `false`.
-			* `EnableMeasurement`: This option will enable measurement but decrease its performance. Default: `false`.
+			* `args` <JS Array>: An array of strings that Wasm application will get as function arguments. Default: `[]`.
+			* `env` <JS Object>: An object like `process.env` that Wasm application will get as its environment variables. Default: `{}`.
+			* `preopens` <JS Object>: An object which maps '<guest_path>:<host_path>'. E.g. `{'/sandbox': '/some/real/path/that/wasm/can/access'}` Default: `{}`.
+			* `EnableWasiStartFunction` <Boolean>: This option will disable wasm-bindgen mode and prepare the working environment for standalone wasm program. If you want to run an appliation with `main()`, you should set this to `true`. Default: `false`.
+			* `EnableAOT` <Boolean>: This option will enable ssvm aot mode. Default: `false`.
+			* `EnableMeasurement` <Boolean>: This option will enable measurement but decrease its performance. Default: `false`.
+			* `AllowCommands` <JS Array>: An array of strings that indicate what commands are allowed to execute in the SSVM Process Module. Default `[]`.
+			* `AllowAllCommands` <Boolean>: Allow users to call any command in the SSVM Process Module. This option will overwrite the `AllowCommands`. Default: `false`.
 * Return value:
 	* `vm_instance`: A ssvm instance.
 
@@ -218,6 +220,7 @@ vm.RunXXX("Func", args);
 	* `InstructionCount` -> <Integer>: The number of executed instructions in this execution.
 	* `TotalGasCost` -> <Integer>: The cost of this execution.
 	* `InstructionPerSecond` -> <Float>: The instructions per second of this execution.
+
 ```javascript
 let result = RunInt("Add", 1, 2);
 // result should be 3

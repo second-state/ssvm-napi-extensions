@@ -10,3 +10,6 @@
 [submodule "ssvm-tensorflow"]
 	path = ssvm-tensorflow
 	url = https://github.com/second-state/ssvm-tensorflow.git
+[submodule "ssvm-image"]
+	path = ssvm-image
+	url = git@github.com:second-state/ssvm-image.git

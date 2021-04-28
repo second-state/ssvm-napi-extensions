@@ -30,7 +30,7 @@ RUN wget https://github.com/second-state/ssvm-tensorflow-deps/releases/download/
 	&& ldconfig
 
 RUN npm install -y -g --unsafe-perm \
-        node-pre-gyp \
+        @mapbox/node-pre-gyp \
         ssvmup \
         wabt
 
@@ -39,6 +39,9 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y \
         cargo-wasi \
         mtcnn \
         mobilenet_v2
+
+RUN rustup override set 1.50.0
+
 
 RUN rm -rf /var/lib/apt/lists/* ${TENSORFLOW_TARBALL}
 WORKDIR /root

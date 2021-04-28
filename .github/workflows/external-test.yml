@@ -26,6 +26,9 @@ jobs:
       with:
         submodules: recursive
 
+    - name: Set Rust to required version
+      run: rustup override set 1.50.0
+
     - name: Build and install SSVM-napi
       uses: './ssvm-napi/.github/actions/build-from-source'
 
