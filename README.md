@@ -25,11 +25,11 @@ For the tensorflow extensions:
 
 * libpng-dev 
 ```bash
-sudo aptitude install libpng-dev
+sudo apt install -y libpng-dev
 ```
 * libjpeg-dev
 ```bash
-sudo aptitude install libjpeg-dev
+sudo apt install -y libjpeg-dev
 ```
 * libtensorflow.so
 	* Please refer to [the TensorFlow website](https://www.tensorflow.org/install/lang_c) for more details
@@ -42,18 +42,17 @@ sudo aptitude install libjpeg-dev
 * libtensorflowlite\_c.so
 	* You can use the following commands to get libtensorflowlite\_c.so
 	```bash
-        # Download TensorFlow deps
 	cd ~
 	wget https://github.com/second-state/ssvm-tensorflow-deps/releases/download/0.1.0/ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	sudo tar -C /usr/local/lib -xzf ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	rm -rf ssvm-tensorflow-deps-lite-0.1.0-linux-x64.tar.gz
 	```
 * Configure dynamic linker run-time bindings
+        * Create links and cache to the shared libraries
         ```bash
-        cd /usr/local/lib
-        sudo ldconfig
-        ```
-
+	cd /usr/local/lib
+	sudo ldconfig
+	```
 ## Prepare environment
 
 ### Use our docker image or dockerfile
