@@ -50,9 +50,10 @@ sudo apt install -y libjpeg-dev
 * Configure dynamic linker run-time bindings
         * Create links and cache to the shared libraries
         ```bash
-	cd /usr/local/lib
+	cd /usrlocal/lib
 	sudo ldconfig
 	```
+
 ## Prepare environment
 
 ### Use our docker image or dockerfile
