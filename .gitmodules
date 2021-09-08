@@ -1,15 +1,3 @@
-[submodule "ssvm-napi"]
-	path = ssvm-napi
-	url = https://github.com/second-state/ssvm-napi.git
-[submodule "ssvm-storage"]
-	path = ssvm-storage
-	url = https://github.com/second-state/ssvm-storage.git
 [submodule "rust_native_storage_library"]
 	path = rust_native_storage_library
 	url = https://github.com/second-state/rust_native_storage_library.git
-[submodule "ssvm-tensorflow"]
-	path = ssvm-tensorflow
-	url = https://github.com/second-state/ssvm-tensorflow.git
-[submodule "ssvm-image"]
-	path = ssvm-image
-	url = git@github.com:second-state/ssvm-image.git
