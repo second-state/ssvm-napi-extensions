@@ -1,63 +1,50 @@
-#ifndef SSVMADDON_H
-#define SSVMADDON_H
+#ifndef WASMEDGEADDON_H
+#define WASMEDGEADDON_H
 
 #include "bytecode.h"
 #include "cache.h"
 #include "errors.h"
 #include "options.h"
-
-#include "vm/configure.h"
-#include "vm/vm.h"
-#include "host/wasi/wasimodule.h"
-#include "common/statistics.h"
-#include "image_module.h"
-#include "storage_module.h"
-#include "tensorflow_module.h"
-#include "tensorflowlite_module.h"
+#include "utils.h"
 
 #include <napi.h>
 #include <string>
-#include <vector>
 #include <unordered_map>
+#include <vector>
+#include <wasmedge.h>
 
-class SSVMAddon : public Napi::ObjectWrap<SSVMAddon> {
+class WasmEdgeAddon : public Napi::ObjectWrap<WasmEdgeAddon> {
 public:
   static Napi::Object Init(Napi::Env Env, Napi::Object Exports);
-  SSVMAddon(const Napi::CallbackInfo &Info);
-  ~SSVMAddon(){
+  WasmEdgeAddon(const Napi::CallbackInfo &Info);
+  ~WasmEdgeAddon() {
     if (Configure != nullptr) {
-      delete Configure;
+      WasmEdge_ConfigureDelete(Configure);
+      Configure = nullptr;
     }
     if (VM != nullptr) {
-      delete VM;
+      WasmEdge_VMDelete(VM);
+      VM = nullptr;
     }
   };
 
-  enum class IntKind {
-    Default,
-    SInt32,
-    UInt32,
-    SInt64,
-    UInt64
-  };
+  enum class IntKind { Default, SInt32, UInt32, SInt64, UInt64 };
 
 private:
-  using ErrorType = SSVM::NAPI::ErrorType;
+  using ErrorType = WASMEDGE::NAPI::ErrorType;
   static Napi::FunctionReference Constructor;
-  SSVM::VM::Configure *Configure;
-  SSVM::ProposalConfigure ProposalConf;
-  SSVM::VM::VM *VM;
-  SSVM::Runtime::Instance::MemoryInstance *MemInst;
-  SSVM::Statistics::Statistics Stat;
-  SSVM::Host::SSVMImageModule ImageMod;
-  SSVM::Host::SSVMStorageModule StorageMod;
-  SSVM::Host::SSVMTensorflowModule TensorflowMod;
-  SSVM::Host::SSVMTensorflowLiteModule TensorflowLiteMod;
-  SSVM::Host::WasiModule *WasiMod;
-  SSVM::NAPI::Bytecode BC;
-  SSVM::NAPI::SSVMOptions Options;
-  SSVM::NAPI::SSVMCache Cache;
-  std::vector<uint8_t> ResultData;
+  WasmEdge_ConfigureContext *Configure;
+  WasmEdge_StoreContext *Store;
+  WasmEdge_VMContext *VM;
+  WasmEdge_MemoryInstanceContext *MemInst;
+  WasmEdge_StatisticsContext *Stat;
+  WasmEdge_ImportObjectContext *WasiMod;
+  WasmEdge_ImportObjectContext *ImageMod;
+  WasmEdge_ImportObjectContext *TensorflowMod;
+  WasmEdge_ImportObjectContext *TensorflowLiteMod;
+  WASMEDGE::NAPI::Bytecode BC;
+  WASMEDGE::NAPI::Options Options;
+  WASMEDGE::NAPI::Cache Cache;
   bool Inited;
 
   /// Setup related functions
@@ -67,10 +54,11 @@ private:
   void LoadWasm(const Napi::CallbackInfo &Info);
   /// WasmBindgen related functions
   void PrepareResource(const Napi::CallbackInfo &Info,
-      std::vector<SSVM::ValVariant> &Args, IntKind IntT);
+                       std::vector<WasmEdge_Value> &Args, IntKind IntT);
   void PrepareResource(const Napi::CallbackInfo &Info,
-      std::vector<SSVM::ValVariant> &Args);
-  void ReleaseResource(const Napi::CallbackInfo &Info, const uint32_t Offset, const uint32_t Size);
+                       std::vector<WasmEdge_Value> &Args);
+  void ReleaseResource(const Napi::CallbackInfo &Info, const uint32_t Offset,
+                       const uint32_t Size);
   /// Run functions
   void Run(const Napi::CallbackInfo &Info);
   Napi::Value RunStart(const Napi::CallbackInfo &Info);
